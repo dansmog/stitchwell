@@ -12,7 +12,6 @@ type ClerkAuthButtonProps = {
 const ClerkAuthButton = ({
   title,
   ActionComponent,
-  isChecked,
   ...props
 }: ClerkAuthButtonProps) => {
   return (
@@ -20,7 +19,6 @@ const ClerkAuthButton = ({
       submit
       className="w-full cursor-pointer rounded-full bg-black h-[52px] text-center transition-all duration-500 ease-in-out text-base font-medium text-white shadow outline-none  hover:bg-[#4B24CD] active:text-white/70"
       {...props}
-      disabled={!isChecked}
     >
       <Clerk.Loading>
         {(isLoading) => (isLoading ? <Loader color="#fff" /> : title)}

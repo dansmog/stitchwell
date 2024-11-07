@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import * as Clerk from "@clerk/elements/common";
-import * as SignUp from "@clerk/elements/sign-up";
+import * as SignIn from "@clerk/elements/sign-up";
 
 import { useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
@@ -12,12 +17,13 @@ import AuthWrapper from "@/app/components/clerk/AuthWrapper";
 import ClerkInput from "@/app/components/clerk/Input";
 import Loader from "@/app/components/ui/Loader";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isVerify = pathname.split("/").includes("verify");
   const isCallback = pathname.split("/").includes("sso-callback");
+
+  const { "sign-in": signIn } = useParams();
 
   const { isLoaded, userId } = useAuth();
 
@@ -31,11 +37,15 @@ export default function SignUpPage() {
 
   return (
     <AuthWrapper
-      title={isVerify ? "Verify your email" : "Create your account!"}
+      title={
+        signIn?.[0] === "verifications"
+          ? "Verify your email"
+          : "Welcome back 👋🏽"
+      }
       subtitle={
-        isVerify
-          ? "To continue to stitchwell, please enter the OTP sent to your email"
-          : "Please enter your details to create your account "
+        signIn?.[0] === "verifications"
+          ? "To continue to mongerTrading, please enter the OTP sent to your email"
+          : "Please enter your details to log in to your account"
       }
     >
       {isCallback ? (
@@ -43,14 +53,14 @@ export default function SignUpPage() {
           <Loader color="#fff" />
         </div>
       ) : (
-        <SignUp.Root
+        <SignIn.Root
           fallback={
             <div className="w-full flex justify-center items-center">
               <Loader color="#fff" />
             </div>
           }
         >
-          <SignUp.Step name="start" className="w-full">
+          <SignIn.Step name="start" className="w-full">
             <Clerk.GlobalError className="block text-sm text-red-400" />
             <div className="space-y-4">
               <ClerkInput
@@ -67,45 +77,33 @@ export default function SignUpPage() {
               />
             </div>
 
-            <div className="mt-2 mb-10 flex items-center gap-1">
-              <span className="text-black text-sm">
-                I agree to the{" "}
-                <Link className="text-[#4B24CD]" href="#" target="_blank">
-                  Privacy Policy
-                </Link>{" "}
-                and{" "}
-                <Link className="text-[#4B24CD]" href="#" target="_blank">
-                  Terms & Conditions.
-                </Link>
-              </span>
-            </div>
-            <div className="flex flex-col space-y-4 mb-6">
+            <div className="flex flex-col space-y-4 mb-6 mt-10">
               <ClerkAuthButton
-                title="Create your account"
-                ActionComponent={SignUp.Action}
+                title="Log in your account"
+                ActionComponent={SignIn.Action}
               />
               <Clerk.Connection
                 name="google"
                 className="flex tex-base item border-[1px] text-white border-[#fff] border-opacity-20 bg-[#011627] w-full py-3 justify-center items-center gap-2 rounded-full"
               >
                 <Clerk.Icon />
-                Sign up with Google
+                Sign in with Google
               </Clerk.Connection>
             </div>
             <p className="text-center w-full text-sm text-black flex items-center justify-center gap-2">
-              Already have an account?
+              Don&apos;t have an account?
               <Link
-                href="/auth/sign-in"
+                href="/auth/sign-up"
                 className="font-medium underline-offset-4 underline text-[#4B24CD] outline-none hover:text-zinc-700 focus-visible:underline"
               >
-                Sign in
+                Create one here
               </Link>
             </p>
-          </SignUp.Step>
+          </SignIn.Step>
 
-          <SignUp.Step name="verifications" className="w-full">
+          <SignIn.Step name="verifications" className="w-full">
             <div className="space-y-6 mb-10">
-              <SignUp.Strategy name="email_code">
+              <SignIn.Strategy name="email_code">
                 <ClerkInput
                   identifier="code"
                   label="Email OTP"
@@ -113,42 +111,16 @@ export default function SignUpPage() {
                   required
                 />
                 <Clerk.FieldError className="block text-sm text-red-400" />
-              </SignUp.Strategy>
+              </SignIn.Strategy>
             </div>
             <div className="flex flex-col space-y-4 mb-6">
               <ClerkAuthButton
                 title="Verify your email"
-                ActionComponent={SignUp.Action}
+                ActionComponent={SignIn.Action}
               />
             </div>
-          </SignUp.Step>
-
-          <SignUp.Step name="continue" className="w-full">
-            <Clerk.GlobalError className="block text-sm text-red-400" />
-            <div className="space-y-6 mb-10">
-              <ClerkInput
-                identifier="firstName"
-                label="First Name"
-                type="text"
-                required
-              />
-              <ClerkInput
-                identifier="lastName"
-                label="Last Name"
-                type="text"
-                required
-              />
-            </div>
-
-            <div className="flex flex-col space-y-4 mb-6">
-              <ClerkAuthButton
-                title="Complete account Sign up"
-                ActionComponent={SignUp.Action}
-                isChecked={true}
-              />
-            </div>
-          </SignUp.Step>
-        </SignUp.Root>
+          </SignIn.Step>
+        </SignIn.Root>
       )}
     </AuthWrapper>
   );

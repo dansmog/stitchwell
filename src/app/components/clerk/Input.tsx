@@ -42,7 +42,7 @@ const ClerkInput = ({
               : type
           }
           required={required}
-          className="w-full mt-1 bg-white text-black ring-1 outline-none ring-inset ring-zinc-300 hover:ring-zinc-400 focus:ring-[1.5px] focus:ring-zinc-950 data-[invalid]:ring-red-400 p-2 rounded-md"
+          className="w-full mt-1 bg-white text-black ring-1 outline-none ring-inset ring-zinc-300 hover:ring-zinc-400 focus:ring-[1.5px] focus:ring-zinc-950 data-[invalid]:ring-red-400 p-3 rounded-md text-sm"
         />
         <Clerk.FieldError className="block text-sm text-red-400 mt-2" />
       </Clerk.Field>
