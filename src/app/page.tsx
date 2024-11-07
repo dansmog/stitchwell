@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 
 const Overview = dynamic(() => import("@/app/components/screens/overview"), {
