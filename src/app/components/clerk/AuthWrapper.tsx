@@ -14,8 +14,8 @@ const AuthWrapper = ({
   subtitle: string;
 }) => {
   return (
-    <div className="w-full bg-zinc-100 px-4 md:px-0 h-screen  flex justify-center pt-10 md:pt-0 md:items-center relative overflow-hidden">
-      <div className="w-full md:w-[469px] bg-white shadow-md rounded-2xl p-5 flex flex-col justify-center items-center gap-10">
+    <div className="w-full bg-zinc-100 px-4 md:px-0 h-screen  flex justify-center pt-20 md:pt-0 md:items-center relative overflow-hidden">
+      <div className="w-full md:w-[469px] bg-white shadow-md rounded-2xl p-5 h-fit flex flex-col md:justify-center md:items-center gap-10">
         <header className="flex items-center justify-center flex-col">
           <Image
             src={Logo}
